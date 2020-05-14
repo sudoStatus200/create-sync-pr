@@ -1,0 +1,14 @@
+name: Sync branches
+author: Rahul Singh Mawari <rsmawari198@gmail.com>
+description: 🔃 Sync non-master branches with master
+inputs:
+  branches:
+    description: "Newline-delimited list of branches"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+branding:
+  icon: "award"
+  color: "green"

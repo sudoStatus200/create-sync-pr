@@ -18,6 +18,7 @@ EOF
 
     git config --global user.email "actions@github.com"
     git config --global user.name "GitHub Action"
+echo "Start"
 
 echo $BRANCHES
 
@@ -26,6 +27,7 @@ IFS=$'\n'      # Change IFS to new line
 branchlist=($BRANCHES) # split to array $names
 IFS=$SAVEIFS   # Restore IFS
 suffix = '-sync'
+_git_setup
 for (( i=0; i<${#branchlist[@]}; i++ ))
 do
     echo "$i: ${names[$i]}"

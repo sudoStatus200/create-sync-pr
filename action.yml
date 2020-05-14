@@ -1,4 +1,4 @@
-name: Sync branches
+name: Create Sync PR
 author: Rahul Singh Mawari <rsmawari198@gmail.com>
 description: 🔃 Sync non-master branches with master
 inputs:

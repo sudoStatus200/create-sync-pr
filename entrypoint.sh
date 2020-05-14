@@ -25,10 +25,13 @@ SAVEIFS=$IFS   # Save current IFS
 IFS=$'\n'      # Change IFS to new line
 branchlist=($BRANCHES) # split to array $names
 IFS=$SAVEIFS   # Restore IFS
-
+suffix = '-sync'
 for (( i=0; i<${#branchlist[@]}; i++ ))
 do
     echo "$i: ${names[$i]}"
-    git checkout ${names[$i]}
-    git merge master
+    git checkout "${names[$i]}" || echo "Problem with checking out make sure branch exist"
+    git checkout -b "${names[$i]}${suffix}" || echo "Problem with creating new branch"
+    git merge master || echo "Problem with merging"
+    git commit -m "merge" || echo "Problem with commiting"
+    git push origin "${names[$i]}${suffix}" || echo "Problemn with push"
 done

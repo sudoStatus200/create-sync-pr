@@ -505,7 +505,7 @@ module.exports = require("os");
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
 const createBranch = __webpack_require__(503);
-
+//Trying to see if it ise getting created right
 async function run() {
   try {
     const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });
@@ -7519,9 +7519,7 @@ exports.RequestError = RequestError;
 /***/ }),
 
 /***/ 503:
-/***/ (function(module, __unusedexports, __webpack_require__) {
-
-const github = __webpack_require__(469);
+/***/ (function(module) {
 
 async function createBranch(octokit, context, branch) {
   branch = branch.replace("refs/heads/", "");

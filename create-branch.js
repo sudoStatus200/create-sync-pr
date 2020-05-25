@@ -1,5 +1,3 @@
-const github = require("@actions/github");
-
 async function createBranch(octokit, context, branch) {
   branch = branch.replace("refs/heads/", "");
 
@@ -8,15 +6,15 @@ async function createBranch(octokit, context, branch) {
       ...context.repo,
       branch,
     });
-  } catch (e) {
+  } catch (error) {
     if (error.name === "HttpError" && error.status === 404) {
-      await toolkit.git.createRef({
+      await octokit.git.createRef({
         ref: `refs/heads/${branch}`,
         sha: context.sha,
         ...context.repo,
       });
     } else {
-	console.log("Error while creating new branch");
+      console.log("Error while creating new branch");
       throw Error(error);
     }
   }

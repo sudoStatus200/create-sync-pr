@@ -1,30 +1,29 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 const createBranch = require("./create-branch");
-//Trying to see if it ise getting created right
 async function run() {
-  try {
-    const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });
-    const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
-    const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
+  const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });
+  const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
+  const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
 
-    const targetBranchesArray = targetBranches.split(",");
+  const targetBranchesArray = targetBranches.split(",");
 
-    for (let branch of targetBranchesArray) {
+  for (let branch of targetBranchesArray) {
+    try {
       console.log(`Making a pull request for ${branch} from ${sourceBranch}.`);
       const {
         payload: { repository },
       } = github.context;
 
       const octokit = new github.GitHub(githubToken);
-      //part of test
+
       const { data: currentPulls } = await octokit.pulls.list({
         owner: repository.owner.login,
         repo: repository.name,
       });
       //create new branch from master branch and PR between new branch and target branch
       const newBranch = `${branch}-sync`;
-      console.log(github.context);
+
       await createBranch(octokit, github.context, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
@@ -57,9 +56,9 @@ async function run() {
         core.setOutput("PULL_REQUEST_URL", currentPull.url.toString());
         core.setOutput("PULL_REQUEST_NUMBER", currentPull.number.toString());
       }
+    } catch (error) {
+      core.setFailed(error.message);
     }
-  } catch (error) {
-    core.setFailed(error.message);
   }
 }
 

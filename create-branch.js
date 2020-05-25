@@ -1,5 +1,3 @@
-const github = require("@actions/github");
-
 async function createBranch(octokit, context, branch) {
   branch = branch.replace("refs/heads/", "");
 

@@ -527,7 +527,7 @@ async function run() {
         repo: repository.name,
       });
       //create new branch from master branch and PR between new branch and target branch
-
+      console.log(repository);
       const newBranch = `${branch}-sync`;
       await createBranch(octokit, github.context, newBranch);
 

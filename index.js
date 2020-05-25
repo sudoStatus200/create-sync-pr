@@ -16,18 +16,17 @@ async function run() {
         payload: { repository },
       } = github.context;
       console.log(repository.owner.login);
-      //	console.log(github.context)
       const octokit = new github.GitHub(githubToken);
-
+      //d
       const { data: currentPulls } = await octokit.pulls.list({
-        owner: repository.owner.login,
+        owner: "sudoStatus200",
         repo: repository.name,
       });
       //create new branch from master branch and PR between new branch and target branch
 
       console.log(currentPulls);
-      const newBranch = `${branch}-sync`;
-      await createBranch(octokit, github.context, newBranch);
+      const newBranch = sourceBranch;
+      //    await createBranch(octokit, github.context, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;

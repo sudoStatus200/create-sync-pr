@@ -22,4 +22,4 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           ACTIONS_RUNNER_DEBUG: true
           SOURCE_BRANCH: "master"
-          TARGET_BRANCH: "develop"
+          TARGET_BRANCH: "develop,experiment"

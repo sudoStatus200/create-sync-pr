@@ -1,14 +1,24 @@
-name: Create Sync PR
+name: "Create Sync PR"
 author: Rahul Singh Mawari <rsmawari198@gmail.com>
-description: 🔃 Sync non-master branches with master
-inputs:
-  branches:
-    description: "Newline-delimited list of branches"
-    required: true
-runs:
-  using: "docker"
-  image: "Dockerfile"
-
+description: "Github Action to create PR for syncing multiple branches"
 branding:
-  icon: "award"
-  color: "green"
+  icon: git-pull-request
+  color: green
+inputs:
+  GITHUB_TOKEN:
+    description: "User token to be associated with this pull request."
+    required: true
+  SOURCE_BRANCH:
+    description: "Branch from make pull-request from"
+    required: true
+  TARGET_BRANCH:
+    description: "Branch to make the pull-request against"
+    required: true
+outputs:
+  PULL_REQUEST_URL:
+    description: "URL for either the generated pull request or the currently open one"
+  PULL_REQUEST_NUMBER:
+    description: "Pull request number from generated pull request or the currently open one"
+runs:
+  using: "node12"
+  main: "dist/index.js"

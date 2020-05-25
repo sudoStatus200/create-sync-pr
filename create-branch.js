@@ -16,6 +16,7 @@ async function createBranch(octokit, context, branch) {
         ...context.repo,
       });
     } else {
+	console.log("Error while creating new branch");
       throw Error(error);
     }
   }

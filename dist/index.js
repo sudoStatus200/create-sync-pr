@@ -514,12 +514,13 @@ async function run() {
 
     const targetBranchesArray = targetBranches.split(",");
 
-    for (let branch in targetBranchesArray) {
+    for (let branch of targetBranchesArray) {
       console.log(`Making a pull request for ${branch} from ${sourceBranch}.`);
       const {
         payload: { repository },
       } = github.context;
-
+	console.log(repository);
+	console.log(github.context)
       const octokit = new github.GitHub(githubToken);
 
       const { data: currentPulls } = await octokit.pulls.list({
@@ -7539,6 +7540,7 @@ async function createBranch(octokit, context, branch) {
         ...context.repo,
       });
     } else {
+	console.log("Error while creating new branch");
       throw Error(error);
     }
   }

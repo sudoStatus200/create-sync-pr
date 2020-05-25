@@ -16,7 +16,7 @@ async function run() {
         payload: { repository },
       } = github.context;
 	console.log(repository);
-	console.log(github.context)
+//	console.log(github.context)
       const octokit = new github.GitHub(githubToken);
 
       const { data: currentPulls } = await octokit.pulls.list({
@@ -25,8 +25,8 @@ async function run() {
       });
       //create new branch from master branch and PR between new branch and target branch
 
-      const newBranch = `${branch}-sync`;
-      await createBranch(octokit, github.context, newBranch);
+      const newBranch = sourceBranch;
+  //    await createBranch(octokit, github.context, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;

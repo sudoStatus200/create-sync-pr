@@ -1,8 +1,8 @@
- name: Sync
-on:
-  pull_request:
-    branches:
-      - master
+name: Sync
+  on:
+    pull_request:
+      branches:
+        - master
 
 jobs:
   sync-branches:

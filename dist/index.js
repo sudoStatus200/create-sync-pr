@@ -512,7 +512,7 @@ async function run() {
     const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
     const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
 
-    const targetBranchesArray = targetBranches.split(",").trim();
+    const targetBranchesArray = targetBranches.split(",");
 
     for (let branch in targetBranchesArray) {
       console.log(`Making a pull request for ${branch} from ${sourceBranch}.`);

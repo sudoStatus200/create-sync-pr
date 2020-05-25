@@ -519,18 +519,17 @@ async function run() {
       const {
         payload: { repository },
       } = github.context;
-	console.log(repository.owner.login);
-//	console.log(github.context)
-      const octokit = new github.GitHub(githubToken);
 
+      const octokit = new github.GitHub(githubToken);
+      //part of test
       const { data: currentPulls } = await octokit.pulls.list({
-        owner: 'sudoStatus200',
+        owner: repository.owner.login,
         repo: repository.name,
       });
       //create new branch from master branch and PR between new branch and target branch
-	console.log(currentPulls)
-      const newBranch = sourceBranch;
-  //    await createBranch(octokit, github.context, newBranch);
+
+      const newBranch = `${branch}-sync`;
+      await createBranch(octokit, github.context, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;
@@ -7532,15 +7531,15 @@ async function createBranch(octokit, context, branch) {
       ...context.repo,
       branch,
     });
-  } catch (e) {
+  } catch (error) {
     if (error.name === "HttpError" && error.status === 404) {
-      await toolkit.git.createRef({
+      await octokit.git.createRef({
         ref: `refs/heads/${branch}`,
         sha: context.sha,
         ...context.repo,
       });
     } else {
-	console.log("Error while creating new branch");
+      console.log("Error while creating new branch");
       throw Error(error);
     }
   }

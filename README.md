@@ -2,6 +2,7 @@
 
 GitHub Action to sync branchs with one source branch. First a new branch is created from source then PR is created between new branch and target branch.
 New branch is created so that you can fix conflicts if any cause source branch might be protected in some case.
+To work properly delete created branches after merging them.
 
 ## Inputs
 
@@ -51,7 +52,6 @@ jobs:
         uses: sudoStatus200/create-sync-pr@0.2.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          ACTIONS_RUNNER_DEBUG: true
           SOURCE_BRANCH: "master"
           TARGET_BRANCH: "develop,experiment"
 ```

@@ -49,7 +49,7 @@ jobs:
         with:
           node-version: 12
       - name: Create Sync PR
-        uses: sudoStatus200/create-sync-pr@0.2.0
+        uses: sudoStatus200/create-sync-pr@0.3.0
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           SOURCE_BRANCH: "master"

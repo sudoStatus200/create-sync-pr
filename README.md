@@ -1,6 +1,7 @@
 # sync-branches
 
-GitHub Action to sync one branch when another is updated.
+GitHub Action to sync branchs with one source branch. First a new branch is created from source then PR is created between new branch and target branch.
+New branch is created so that you can fix conflicts if any cause source branch might be protected in some case.
 
 ## Inputs
 
@@ -14,7 +15,7 @@ GitHub Action to sync one branch when another is updated.
 
 ### `TARGET_BRANCH`
 
-**Required** The branch you want to make the pull request to.
+**Required** The branchs you want to make the pull request to. Multiple branches need to be separate by comma like in example
 
 ## Outputs
 
@@ -25,3 +26,34 @@ Set to the URL of either the pull request that was opened by this action or the 
 ### `PULL_REQUEST_NUMBER`
 
 Pull request number from generated pull request or the currently open one
+
+### Example
+
+```yml
+name: Sync
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    name: Syncing branches
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Create Sync PR
+        uses: sudoStatus200/create-sync-pr@0.2.0
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          ACTIONS_RUNNER_DEBUG: true
+          SOURCE_BRANCH: "master"
+          TARGET_BRANCH: "develop,experiment"
+```
+
+Modified version of action [Sync branches](https://github.com/TreTuna/sync-branches)

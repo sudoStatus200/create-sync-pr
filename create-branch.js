@@ -1,6 +1,4 @@
 async function createBranch(octokit, context, branch) {
-  branch = branch.replace("refs/heads/", "");
-
   try {
     await octokit.repos.getBranch({
       ...context.repo,

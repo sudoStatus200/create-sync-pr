@@ -38,7 +38,8 @@ async function run() {
           head: newBranch,
           base: branch,
           title: `sync: ${branch}  with ${newBranch}`,
-          body: `sync-branches: syncing branch with ${newBranch}`,
+          body: `sync-branches: syncing branch with ${newBranch}
+                  ${newBranch} is created from ${sourceBranch}`,
           draft: false,
         });
 

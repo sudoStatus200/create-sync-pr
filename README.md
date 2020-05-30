@@ -1,4 +1,4 @@
-# sync-branches
+# create-sync-pr
 
 GitHub Action to sync branchs with one source branch. First a new branch is created from source then PR is created between new branch and target branch.
 New branch is created so that you can fix conflicts if any cause source branch might be protected in some case.
@@ -56,4 +56,4 @@ jobs:
           TARGET_BRANCH: "develop,experiment"
 ```
 
-Modified version of action [Sync branches](https://github.com/TreTuna/sync-branches)
+Modified version of action [Sync branches](https://github.com/TreTuna/sync-branches) with support of multiple target branches and creating new branch for PR

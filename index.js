@@ -3,29 +3,30 @@ const github = require("@actions/github");
 const createBranch = require("./create-branch");
 
 async function run() {
-  const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });
-  const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
-  const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
+  try {
+    const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });
+    const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
+    const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
 
-  const targetBranchesArray = targetBranches.split(",");
+    const targetBranchesArray = targetBranches.split(",");
 
-  for (let branch of targetBranchesArray) {
-    try {
+    for (let branch of targetBranchesArray) {
       console.log(`Making a pull request for ${branch} from ${sourceBranch}.`);
       const {
         payload: { repository },
       } = github.context;
 
       const octokit = new github.GitHub(githubToken);
-
+      //part of test
       const { data: currentPulls } = await octokit.pulls.list({
         owner: repository.owner.login,
         repo: repository.name,
       });
       //create new branch from master branch and PR between new branch and target branch
-      const newBranch = `${branch}-sync`;
 
-      await createBranch(octokit, github.context, newBranch);
+      const context = github.context;
+      const newBranch = `${branch}-sync-${context.sha.slice(-4)}`;
+      await createBranch(octokit, context, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;
@@ -38,8 +39,7 @@ async function run() {
           head: newBranch,
           base: branch,
           title: `sync: ${branch}  with ${newBranch}`,
-          body: `sync-branches: syncing branch with ${newBranch}
-                  ${newBranch} is created from ${sourceBranch}`,
+          body: `sync-branches: syncing branch with ${newBranch}`,
           draft: false,
         });
 
@@ -58,9 +58,9 @@ async function run() {
         core.setOutput("PULL_REQUEST_URL", currentPull.url.toString());
         core.setOutput("PULL_REQUEST_NUMBER", currentPull.number.toString());
       }
-    } catch (error) {
-      core.setFailed(error.message);
     }
+  } catch (error) {
+    core.setFailed(error.message);
   }
 }
 

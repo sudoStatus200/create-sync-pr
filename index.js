@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
 const createBranch = require("./create-branch");
+
 async function run() {
   try {
     const sourceBranch = core.getInput("SOURCE_BRANCH", { required: true });

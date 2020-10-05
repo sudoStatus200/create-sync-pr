@@ -22,11 +22,17 @@ async function run() {
         owner: repository.owner.login,
         repo: repository.name,
       });
-      //create new branch from master branch and PR between new branch and target branch
+      //create new branch from source branch and PR between new branch and target branch
 
       const context = github.context;
-	  const sha = context.sha;
+      const {
+        data: { object: { sha } }
+      } = await octokit.git.getRef({
+        ref: `heads/${sourceBranch}`,
+        ...context.repo,
+      });
       const newBranch = `${branch}-sync-${sha.slice(-4)}`;
+      console.log(`${sourceBranch} is at ${sha}. Intermediate branch for PR: ${newBranch}.`);
       await createBranch(octokit, context.repo, sha, newBranch);
 
       const currentPull = currentPulls.find((pull) => {

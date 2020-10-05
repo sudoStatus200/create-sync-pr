@@ -25,8 +25,9 @@ async function run() {
       //create new branch from master branch and PR between new branch and target branch
 
       const context = github.context;
-      const newBranch = `${branch}-sync-${context.sha.slice(-4)}`;
-      await createBranch(octokit, context, newBranch);
+	  const sha = context.sha;
+      const newBranch = `${branch}-sync-${sha.slice(-4)}`;
+      await createBranch(octokit, context.repo, sha, newBranch);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;

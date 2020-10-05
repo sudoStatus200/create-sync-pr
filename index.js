@@ -39,6 +39,7 @@ async function run() {
         return pull.head.ref === newBranch && pull.base.ref === branch;
       });
 
+      core.setOutput("PULL_REQUEST_BRANCH", newBranch);
       if (!currentPull) {
         const { data: pullRequest } = await octokit.pulls.create({
           owner: repository.owner.login,

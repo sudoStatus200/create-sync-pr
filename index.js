@@ -50,7 +50,7 @@ async function run() {
         });
 
         console.log(
-          `Pull request (${pullRequest.number}) successful! You can view it here: ${pullRequest.url}.`
+          `Pull request (${pullRequest.number}) successful! You can view it here: ${pullRequest.html_url}`
         );
 
         core.setOutput("PULL_REQUEST_URL", pullRequest.url.toString());

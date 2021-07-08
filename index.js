@@ -27,13 +27,16 @@ async function run() {
         ref: `heads/${sourceBranch}`,
         ...context.repo,
       });
+      console.log(`${sourceBranch} is at ${sha}.`);
+
       const newBranch = `${branch}-sync-${sha.slice(-4)}`;
-      console.log(`${sourceBranch} is at ${sha}. Intermediate branch for PR: ${newBranch}.`);
       await createBranch(octokit, context.repo, sha, newBranch);
+      console.log(`Intermediate branch for PR: ${newBranch}.`);
 
       const currentPull = currentPulls.find((pull) => {
         return pull.head.ref === newBranch && pull.base.ref === branch;
       });
+      console.log(`currentPull: ${currentPull}`);
 
       core.setOutput("PULL_REQUEST_BRANCH", newBranch);
       if (!currentPull) {

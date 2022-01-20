@@ -29,7 +29,7 @@ async function run() {
       });
       console.log(`${sourceBranch} is at ${sha}.`);
 
-      const newBranch = `${branch}-sync-${sha.slice(-4)}`;
+      const newBranch = `promote-to-${branch}`;
       await createBranch(octokit, context.repo, sha, newBranch);
       console.log(`Intermediate branch for PR: ${newBranch}.`);
 

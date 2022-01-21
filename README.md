@@ -18,6 +18,14 @@ To work properly delete created branches after merging them.
 
 **Required** The branches you want to make the pull request to. Multiple branches need to be separated by comma like in example
 
+### `REVIEWERS`
+
+A list of user logins that will be requested to review the Pull Request. Mutiple users need to be separated by comma
+
+### `TEAM_REVIEWERS`
+A list of team slugs that will be requested to review the Pull Request. Multiple slugs need to be separated by comma
+
+
 ## Outputs
 
 ### `PULL_REQUEST_URL`

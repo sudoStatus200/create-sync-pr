@@ -8,6 +8,19 @@ async function run() {
     const targetBranches = core.getInput("TARGET_BRANCH", { required: true });
     const githubToken = core.getInput("GITHUB_TOKEN", { required: true });
 
+    const reviewers = core.getInput("REVIEWERS", { required: false });
+    const teamReviewers = core.getInput("TEAM_REVIEWERS", { required: false });
+
+    const reviewersArray = teamReviewersArray = null;
+
+    if (reviewers) {
+      reviewersArray = reviewers.split(",");
+    }
+
+    if (teamReviewers) {
+        teamReviewersArray = teamReviewers.split(",");
+    }
+
     const targetBranchesArray = targetBranches.split(",");
 
     for (let branch of targetBranchesArray) {
@@ -55,6 +68,16 @@ async function run() {
 
         core.setOutput("PULL_REQUEST_URL", pullRequest.url.toString());
         core.setOutput("PULL_REQUEST_NUMBER", pullRequest.number.toString());
+
+        if (reviewers || teamReviewers) {
+          octokit.rest.pulls.requestReviewers({
+            pull_number: pullRequest.number,
+            reviewers: reviewersArray,
+            team_reviewers: teamReviewersArray,
+            ...context.repo,
+          });
+
+        }
       } else {
         console.log(
           `There is already a pull request (${currentPull.number}) to ${branch} from ${newBranch}.`,

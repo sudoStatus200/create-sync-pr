@@ -7536,7 +7536,7 @@ async function createOrUpdateBranch(octokit, repo, sha, branch) {
     });
     // If branch already exists, update ref
     await octokit.git.updateRef({
-      ref: `refs/heads/${branch}`,
+      ref: `heads/${branch}`,
       sha: sha,
       ...repo,
     });
@@ -7554,7 +7554,7 @@ async function createOrUpdateBranch(octokit, repo, sha, branch) {
   }
 }
 
-module.exports = createBranch;
+module.exports = createOrUpdateBranch;
 
 
 /***/ }),

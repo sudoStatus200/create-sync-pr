@@ -11,7 +11,7 @@ async function run() {
     const reviewers = core.getInput("REVIEWERS", { required: false });
     const teamReviewers = core.getInput("TEAM_REVIEWERS", { required: false });
 
-    const reviewersArray = teamReviewersArray = null;
+    const reviewersArray = teamReviewersArray = [];
 
     if (reviewers) {
       reviewersArray = reviewers.split(",");
@@ -27,16 +27,16 @@ async function run() {
       console.log(`Making a pull request for ${branch} from ${sourceBranch}.`);
       const context = github.context;
 
-      const octokit = new github.GitHub(githubToken);
+      const octokit = new github.getOctokit(githubToken);
       //part of test
-      const { data: currentPulls } = await octokit.pulls.list({
+      const { data: currentPulls } = await octokit.rest.pulls.list({
         ...context.repo,
       });
       //create new branch from source branch and PR between new branch and target branch
 
       const {
         data: { object: { sha } }
-      } = await octokit.git.getRef({
+      } = await octokit.rest.git.getRef({
         ref: `heads/${sourceBranch}`,
         ...context.repo,
       });
@@ -53,7 +53,7 @@ async function run() {
 
       core.setOutput("PULL_REQUEST_BRANCH", newBranch);
       if (!currentPull) {
-        const { data: pullRequest } = await octokit.pulls.create({
+        const { data: pullRequest } = await octokit.rest.pulls.create({
           head: newBranch,
           base: branch,
           title: `sync: ${branch}  with ${newBranch}`,
@@ -70,7 +70,7 @@ async function run() {
         core.setOutput("PULL_REQUEST_NUMBER", pullRequest.number.toString());
 
         if (reviewers || teamReviewers) {
-          octokit.rest.pulls.requestReviewers({
+          await octokit.rest.pulls.requestReviewers({
             pull_number: pullRequest.number,
             reviewers: reviewersArray,
             team_reviewers: teamReviewersArray,

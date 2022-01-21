@@ -14,6 +14,12 @@ inputs:
   TARGET_BRANCH:
     description: "Branch to make the pull-request against"
     required: true
+  REVIEWERS:
+    description: "Users to review the pull-request"
+    required: false
+  TEAM_REVIEWERS:
+    description: "Team slug to review the pull request"
+    required: false
 outputs:
   PULL_REQUEST_URL:
     description: "URL for either the generated pull request or the currently open one"

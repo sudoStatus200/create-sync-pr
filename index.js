@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 const github = require("@actions/github");
-const createBranch = require("./create-branch");
+const createOrUpdateBranch = require("./create-branch");
 
 async function run() {
   try {
@@ -30,7 +30,7 @@ async function run() {
       console.log(`${sourceBranch} is at ${sha}.`);
 
       const newBranch = `promote-to-${branch}`;
-      await createBranch(octokit, context.repo, sha, newBranch);
+      await createOrUpdateBranch(octokit, context.repo, sha, newBranch);
       console.log(`Intermediate branch for PR: ${newBranch}.`);
 
       const currentPull = currentPulls.find((pull) => {

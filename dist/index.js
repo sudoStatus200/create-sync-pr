@@ -504,7 +504,7 @@ module.exports = require("os");
 
 const core = __webpack_require__(470);
 const github = __webpack_require__(469);
-const createBranch = __webpack_require__(503);
+const createOrUpdateBranch = __webpack_require__(503);
 
 async function run() {
   try {
@@ -534,7 +534,7 @@ async function run() {
       console.log(`${sourceBranch} is at ${sha}.`);
 
       const newBranch = `promote-to-${branch}`;
-      await createBranch(octokit, context.repo, sha, newBranch);
+      await createOrUpdateBranch(octokit, context.repo, sha, newBranch);
       console.log(`Intermediate branch for PR: ${newBranch}.`);
 
       const currentPull = currentPulls.find((pull) => {
@@ -7528,11 +7528,17 @@ exports.RequestError = RequestError;
 /***/ 503:
 /***/ (function(module) {
 
-async function createBranch(octokit, repo, sha, branch) {
+async function createOrUpdateBranch(octokit, repo, sha, branch) {
   try {
     await octokit.repos.getBranch({
       ...repo,
       branch,
+    });
+    // If branch already exists, update ref
+    await octokit.git.updateRef({
+      ref: `refs/heads/${branch}`,
+      sha: sha,
+      ...repo,
     });
   } catch (error) {
     if (error.name === "HttpError" && error.status === 404) {

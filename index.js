@@ -47,7 +47,7 @@ async function run() {
            ...context.repo,
             basehead: `${branch}...${sourceBranch}`,
       });
-      console.log(branchDiff)
+
       if (branchDiff.files.length == 0) {
           console.log(`No need to create new PR, there are no file changes between ${sourceBranch} and ${branch}`)
           continue;

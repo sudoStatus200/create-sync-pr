@@ -322,6 +322,17 @@ async function run() {
       });
       console.log(`${sourceBranch} is at ${sha}.`);
 
+      //compare diffs between branches in order to avoid creating empty pull request
+      const { data: branchDiff } = await octokit.rest.repos.compareCommitsWithBasehead({
+           ...context.repo,
+            basehead: `${branch}...${sourceBranch}`,
+      });
+      console.log(branchDiff)
+      if (branchDiff.files.length == 0) {
+          console.log(`No need to create new PR, there are no file changes between ${sourceBranch} and ${branch}`)
+          continue;
+      }
+
       const newBranch = `promote-to-${branch}`;
       await createOrUpdateBranch(octokit, context.repo, sha, newBranch);
       console.log(`Intermediate branch for PR: ${newBranch}.`);

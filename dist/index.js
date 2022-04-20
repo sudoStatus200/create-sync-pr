@@ -291,7 +291,7 @@ async function run() {
     const reviewers = core.getInput("REVIEWERS", { required: false });
     const teamReviewers = core.getInput("TEAM_REVIEWERS", { required: false });
 
-    const reviewersArray = teamReviewersArray = [];
+    let reviewersArray = teamReviewersArray = [];
 
     if (reviewers) {
       reviewersArray = reviewers.split(",");

@@ -4427,6 +4427,7 @@ async function createOrUpdateBranch(octokit, repo, sha, branch) {
     await octokit.rest.git.updateRef({
       ref: `heads/${branch}`,
       sha: sha,
+      force: true,
       ...repo,
     });
   } catch (error) {

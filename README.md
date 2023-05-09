@@ -16,7 +16,15 @@ To work properly delete created branches after merging them.
 
 ### `TARGET_BRANCH`
 
-**Required** The branchs you want to make the pull request to. Multiple branches need to be separate by comma like in example
+**Required** The branches you want to make the pull request to. Multiple branches need to be separated by comma like in example
+
+### `REVIEWERS`
+
+A list of user logins that will be requested to review the Pull Request. Mutiple users need to be separated by comma
+
+### `TEAM_REVIEWERS`
+A list of team slugs that will be requested to review the Pull Request. Multiple slugs need to be separated by comma
+
 
 ## Outputs
 
@@ -27,6 +35,10 @@ Set to the URL of either the pull request that was opened by this action or the 
 ### `PULL_REQUEST_NUMBER`
 
 Pull request number from generated pull request or the currently open one
+
+### `PULL_REQUEST_NUMBER`
+
+The intermediate branch name used to create the pull request.
 
 ### Example
 

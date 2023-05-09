@@ -1,15 +1,22 @@
-async function createBranch(octokit, context, branch) {
+async function createOrUpdateBranch(octokit, repo, sha, branch) {
   try {
-    await octokit.repos.getBranch({
-      ...context.repo,
+    await octokit.rest.repos.getBranch({
+      ...repo,
       branch,
+    });
+    // If branch already exists, update ref
+    await octokit.rest.git.updateRef({
+      ref: `heads/${branch}`,
+      sha: sha,
+      force: true,
+      ...repo,
     });
   } catch (error) {
     if (error.name === "HttpError" && error.status === 404) {
-      await octokit.git.createRef({
+      await octokit.rest.git.createRef({
         ref: `refs/heads/${branch}`,
-        sha: context.sha,
-        ...context.repo,
+        sha: sha,
+        ...repo,
       });
     } else {
       console.log("Error while creating new branch");
@@ -18,4 +25,4 @@ async function createBranch(octokit, context, branch) {
   }
 }
 
-module.exports = createBranch;
+module.exports = createOrUpdateBranch;
